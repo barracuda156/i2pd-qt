@@ -136,18 +136,18 @@ QMAKE_EXTRA_TARGETS += BuildDateTimeQtTarget
 DEFINES += VCS_COMMIT_INFO="\\\"git:$(shell git -C \""$$_PRO_FILE_PWD_"\" describe --always)\\\""
 
 macx {
-	message("using mac os x target")
-	BREWROOT=/usr/local
-	BOOSTROOT=$$BREWROOT/opt/boost
-	SSLROOT=$$BREWROOT/opt/libressl
-	UPNPROOT=$$BREWROOT/opt/miniupnpc
+	message("Using macOS target")
+	PREFIX=/opt/local
+	BOOSTROOT=$$PREFIX/libexec/boost/1.76
+	SSLROOT=$$PREFIX/libexec/openssl3
+	UPNPROOT=$$PREFIX
 	INCLUDEPATH += $$BOOSTROOT/include
 	INCLUDEPATH += $$SSLROOT/include
 	INCLUDEPATH += $$UPNPROOT/include
 	LIBS += $$SSLROOT/lib/libssl.a
 	LIBS += $$SSLROOT/lib/libcrypto.a
-	LIBS += $$BOOSTROOT/lib/libboost_program_options.a
-	LIBS += $$UPNPROOT/lib/libminiupnpc.a
+	LIBS += $$BOOSTROOT/lib/libboost_program_options-mt.dylib
+	LIBS += $$UPNPROOT/lib/libminiupnpc.dylib
 	LIBS += -Wl,-dead_strip
 	LIBS += -Wl,-dead_strip_dylibs
 	LIBS += -Wl,-bind_at_load
