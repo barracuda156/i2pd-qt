@@ -66,11 +66,11 @@ namespace qt
 	{
 		Worker *worker = new Worker (m_Daemon);
 		worker->moveToThread(&workerThread);
-		connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
-		connect(this, &Controller::startDaemon, worker, &Worker::startDaemon);
-		connect(this, &Controller::stopDaemon, worker, &Worker::stopDaemon);
-		connect(this, &Controller::restartDaemon, worker, &Worker::restartDaemon);
-		connect(worker, &Worker::resultReady, this, &Controller::handleResults);
+		connect(&workerThread, SIGNAL(finished()), worker, SLOT(deleteLater()));
+		connect(this, SIGNAL(startDaemon()), worker, SLOT(startDaemon()));
+		connect(this, SIGNAL(stopDaemon()), worker, SLOT(stopDaemon()));
+		connect(this, SIGNAL(restartDaemon()), worker, SLOT(restartDaemon()));
+		connect(worker, SIGNAL(resultReady(bool, QString)), this, SLOT(handleResults(bool, QString)));
 		workerThread.start();
 	}
 	Controller::~Controller()
@@ -178,7 +178,7 @@ namespace qt
                 i2p::qt::Controller daemonQtController(daemon);
                 w.setI2PController(&daemonQtController);
                 LogPrint(eLogDebug, "Starting the daemon...");
-                emit daemonQtController.startDaemon();
+                daemonQtController.emitStartDaemon();
                 //daemon.start ();
                 LogPrint(eLogDebug, "Starting GUI event loop...");
                 result = app.exec();

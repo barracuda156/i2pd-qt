@@ -32,10 +32,12 @@ QString Worker::pollAndShootATimerForInfiniteRetries() {
 Controller::Controller(LogViewerManager &parameter1):logViewerManager(parameter1) {
     Worker *worker = new Worker(parameter1);
     worker->moveToThread(&workerThread);
-    connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &Controller::operate1, worker, &Worker::doWork1);
-    connect(worker, &Worker::resultReady,
-            &parameter1, &LogViewerManager::appendPlainText_atGuiThread);
+
+    connect(&workerThread, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    connect(this, SIGNAL(operate1()), worker, SLOT(doWork1()));
+    connect(worker, SIGNAL(resultReady(QString)),
+            &parameter1, SLOT(appendPlainText_atGuiThread(QString)));
+
     workerThread.start();
     timerId=startTimer(100/*millis*/);
 }

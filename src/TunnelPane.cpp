@@ -6,6 +6,10 @@
 
 #include "I2pdQtUtil.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    #define QStringLiteral QString::fromUtf8
+#endif
+
 TunnelPane::TunnelPane(TunnelsPageUpdateListener* tunnelsPageUpdateListener_, TunnelConfig* tunnelConfig_, QWidget* wrongInputPane_, QLabel* wrongInputLabel_, MainWindow* mainWindow_):
     QObject(),
     mainWindow(mainWindow_),
@@ -373,11 +377,11 @@ const char I2P_TUNNELS_SECTION_TYPE_WEBSOCKS[] = "websocks";
 const char I2P_TUNNELS_SECTION_TYPE_HTTPPROXY[] = "httpproxy";
 */
 QString TunnelPane::readTunnelTypeComboboxData() {
-    return tunnelTypeComboBox->currentData().toString();
+    return tunnelTypeComboBox->itemData(tunnelTypeComboBox->currentIndex()).toString();
 }
 
 i2p::data::SigningKeyType TunnelPane::readSigTypeComboboxUI(QComboBox* sigTypeComboBox) {
-    return (i2p::data::SigningKeyType) sigTypeComboBox->currentData().toInt();
+    return (i2p::data::SigningKeyType) sigTypeComboBox->itemData(sigTypeComboBox->currentIndex()).toInt();
 }
 
 void TunnelPane::deleteTunnelForm() {

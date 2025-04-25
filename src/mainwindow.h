@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QtCore/QVariant>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
@@ -26,6 +27,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#endif
 #include "QVBoxLayout"
 #include "QUrl"
 
@@ -249,7 +251,7 @@ public:
     virtual void loadFromConfigOption(){
         MainWindowItem::loadFromConfigOption();
         const char * ld = boost::any_cast<std::string>(optionValue).c_str();
-        comboBox->setCurrentText(QString(ld));
+        comboBox->setEditText(QString(ld));
     }
     virtual void saveToStringStream(std::stringstream& out){
         std::string logDest = comboBox->currentText().toStdString();
@@ -267,7 +269,7 @@ public:
     virtual void loadFromConfigOption(){
         MainWindowItem::loadFromConfigOption();
         const char * ll = boost::any_cast<std::string>(optionValue).c_str();
-        comboBox->setCurrentText(QString(ll));
+        comboBox->setEditText(QString(ll));
     }
     virtual void saveToStringStream(std::stringstream& out){
         optionValue=comboBox->currentText().toStdString();
@@ -286,7 +288,7 @@ public:
         SignatureTypeComboBoxFactory::fillComboBox(comboBox, selected);
     }
     virtual void saveToStringStream(std::stringstream& out){
-        uint16_t selected = SignatureTypeComboBoxFactory::getSigType(comboBox->currentData());
+        uint16_t selected = SignatureTypeComboBoxFactory::getSigType(comboBox->itemData(comboBox->currentIndex()));
         optionValue=(unsigned short)selected;
         MainWindowItem::saveToStringStream(out);
     }

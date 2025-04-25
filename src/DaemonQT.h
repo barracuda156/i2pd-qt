@@ -65,18 +65,24 @@ namespace qt
     {
         Q_OBJECT
         QThread workerThread;
+
     public:
         Controller(DaemonQTImpl& daemon);
         ~Controller();
-	private:
-		DaemonQTImpl& m_Daemon;
+
+        void emitStartDaemon() { emit startDaemon(); }
+        void emitRestartDaemon() { emit restartDaemon(); }
+
+    private:
+        DaemonQTImpl& m_Daemon;
 
     public slots:
-        void handleResults(bool failed, QString failureMessage){
-            if(failed){
+        void handleResults(bool failed, QString failureMessage) {
+            if (failed) {
                 QMessageBox::critical(0, QObject::tr("Error"), failureMessage);
             }
         }
+
     signals:
         void startDaemon();
         void stopDaemon();

@@ -2,6 +2,10 @@
 #include "ClientContext.h"
 #include "SignatureTypeComboboxFactory.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    #define QStringLiteral QString::fromUtf8
+#endif
+
 ServerTunnelPane::ServerTunnelPane(TunnelsPageUpdateListener* tunnelsPageUpdateListener, ServerTunnelConfig* tunconf, QWidget* wrongInputPane_, QLabel* wrongInputLabel_, MainWindow* mainWindow):
     TunnelPane(tunnelsPageUpdateListener, tunconf, wrongInputPane_, wrongInputLabel_, mainWindow) {}
 

@@ -13,10 +13,13 @@
 
 #include <QApplication>
 #include <QScreen>
-#include <QStyleHints>
 #include <QScreen>
-#include <QWindow>
 #include <QMessageBox>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QStyleHints>
+#include <QWindow>
+#endif
 
 #include <assert.h>
 
@@ -643,7 +646,7 @@ void MainWindow::handleGracefulQuitButton() {
 
 void MainWindow::handleDoRestartButton() {
     qDebug()<<"Do Restart pressed.";
-    emit i2pController->restartDaemon();
+    i2pController->emitRestartDaemon();
 }
 
 
